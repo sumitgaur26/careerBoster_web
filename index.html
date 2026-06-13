@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerBooster Academy — From Learning to Leadership</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1E3A5F',
+            amber: '#F5A623',
+            teal: '#00C2CB',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Fade-in animation */
+    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Staggered children */
+    .stagger > * { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .stagger.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.05s; }
+    .stagger.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
+    .stagger.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.25s; }
+    .stagger.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
+    .stagger.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+    .stagger.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
+
+    /* Hero gradient */
+    .hero-gradient {
+      background: linear-gradient(135deg, #1E3A5F 0%, #122847 50%, #0d1f36 100%);
+    }
+
+    /* Navbar shadow on scroll */
+    .navbar-scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+
+    /* Track card hover */
+    .track-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .track-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+
+    /* Testimonial card */
+    .testimonial-card { transition: transform 0.2s ease; }
+    .testimonial-card:hover { transform: translateY(-4px); }
+
+    /* Mobile menu */
+    #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    #mobile-menu.open { max-height: 300px; }
+
+    /* Step connector line */
+    .step-line { position: relative; }
+    @media (min-width: 768px) {
+      .step-line::after {
+        content: '';
+        position: absolute;
+        top: 28px;
+        left: calc(50% + 32px);
+        width: calc(100% - 64px);
+        height: 2px;
+        background: rgba(245, 166, 35, 0.3);
+      }
+      .step-line:last-child::after { display: none; }
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Logo -->
+        <a href="#" class="flex-shrink-0">
+          <span class="text-navy font-bold text-lg leading-tight">
+            CareerBooster<br class="hidden sm:block" /><span class="text-teal"> Academy</span>
+          </span>
+        </a>
+
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#certification-tracks" class="text-gray-600 hover:text-navy font-medium transition-colors text-sm">Certification Tracks</a>
+          <a href="#how-it-works" class="text-gray-600 hover:text-navy font-medium transition-colors text-sm">How It Works</a>
+          <a href="#success-stories" class="text-gray-600 hover:text-navy font-medium transition-colors text-sm">Success Stories</a>
+        </div>
+
+        <!-- Desktop CTA -->
+        <div class="hidden md:block">
+          <a href="#" onclick="openCalendly(event)"
+             class="bg-amber text-navy font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-amber/90 transition-colors">
+            Book Free Clarity Call
+          </a>
+        </div>
+
+        <!-- Hamburger -->
+        <button id="hamburger" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+          <div class="w-5 h-0.5 bg-navy mb-1 transition-all" id="ham-1"></div>
+          <div class="w-5 h-0.5 bg-navy mb-1 transition-all" id="ham-2"></div>
+          <div class="w-5 h-0.5 bg-navy transition-all" id="ham-3"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100">
+      <div class="px-4 py-4 flex flex-col gap-3">
+        <a href="#certification-tracks" class="text-gray-600 hover:text-navy font-medium py-2 transition-colors" onclick="closeMobileMenu()">Certification Tracks</a>
+        <a href="#how-it-works" class="text-gray-600 hover:text-navy font-medium py-2 transition-colors" onclick="closeMobileMenu()">How It Works</a>
+        <a href="#success-stories" class="text-gray-600 hover:text-navy font-medium py-2 transition-colors" onclick="closeMobileMenu()">Success Stories</a>
+        <a href="#" onclick="openCalendly(event); closeMobileMenu();"
+           class="bg-amber text-navy font-semibold px-5 py-3 rounded-lg text-center text-sm hover:bg-amber/90 transition-colors mt-2">
+          Book Free Clarity Call
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero-gradient pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40 text-center">
+      <div class="fade-in">
+        <span class="inline-block bg-teal/20 text-teal text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">
+          🚀 Trusted by 500+ Working Professionals
+        </span>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+          Get Certified.<br />Get Promoted.<br />
+          <span class="text-amber">Lead with Confidence.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+          CareerBooster Academy gives working professionals a clear certification roadmap, structured training,
+          and career support — so you stop guessing and start growing.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#" onclick="openCalendly(event)"
+             class="bg-amber text-navy font-bold px-8 py-4 rounded-xl text-base hover:bg-amber/90 transition-all hover:scale-105 shadow-lg">
+            Book Your Free Career Clarity Call
+          </a>
+          <a href="#certification-tracks"
+             class="border-2 border-white text-white font-semibold px-8 py-4 rounded-xl text-base hover:bg-white/10 transition-all">
+            See Certification Tracks ↓
+          </a>
+        </div>
+        <p class="text-blue-200/60 text-sm mt-6">Free · No credit card · 30 minutes</p>
+      </div>
+
+      <!-- Hero bottom wave -->
+      <div class="mt-20">
+        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto stagger">
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <div class="text-2xl font-black text-amber">500+</div>
+            <div class="text-blue-200 text-xs mt-1">Professionals</div>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <div class="text-2xl font-black text-amber">1,200+</div>
+            <div class="text-blue-200 text-xs mt-1">Certifications</div>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <div class="text-2xl font-black text-amber">92%</div>
+            <div class="text-blue-200 text-xs mt-1">Career Growth</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Curved bottom -->
+    <div class="h-12 bg-[#F8FAFC]" style="clip-path: ellipse(55% 100% at 50% 100%);"></div>
+  </section>
+
+  <!-- ========== PROBLEM SECTION ========== -->
+  <section id="how-it-works" class="bg-[#F8FAFC] py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-in">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-3">Does this sound familiar?</h2>
+        <p class="text-gray-500 text-base max-w-xl mx-auto">You're not alone — these are the four roadblocks holding talented professionals back.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 stagger">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
+          <div class="text-3xl mb-4">🔄</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Stuck in the same role</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">You watch peers get promoted while your title and salary stay frozen — despite doing great work.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
+          <div class="text-3xl mb-4">😵</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Overwhelmed by certification options</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">AWS or Azure? PMP or PRINCE2? The certification jungle is real, and guessing wrong wastes months.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
+          <div class="text-3xl mb-4">📚</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Self-studying but never exam-ready</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">You've started three courses, finished none, and exam day still feels impossibly far away.</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
+          <div class="text-3xl mb-4">👻</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Applying but not hearing back</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Your resume hits the black hole. Without the right credentials, recruiters scroll right past you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GUIDE / TRUST SECTION ========== -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+        <!-- Left: Copy -->
+        <div class="fade-in">
+          <span class="text-teal font-semibold text-sm tracking-wide uppercase">Why CareerBooster Works</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-navy mt-3 mb-5 leading-tight">
+            You don't need more courses.<br />You need a <span class="text-teal">clear path.</span>
+          </h2>
+          <p class="text-gray-600 text-base leading-relaxed mb-5">
+            Most professionals don't fail because they lack talent. They fail because they have no structured plan.
+            CareerBooster Academy was built specifically for working professionals who are ready to grow but need
+            the right roadmap to get there.
+          </p>
+          <p class="text-gray-600 text-base leading-relaxed">
+            We pair you with a career advisor, map out the exact certifications that unlock your target role, and
+            walk with you through every study hour until you've passed — and levelled up.
+          </p>
+          <a href="#" onclick="openCalendly(event)"
+             class="inline-block mt-8 bg-amber text-navy font-bold px-7 py-3.5 rounded-xl text-sm hover:bg-amber/90 transition-all hover:scale-105">
+            Claim Your Free Clarity Call →
+          </a>
+        </div>
+
+        <!-- Right: Stats -->
+        <div class="grid grid-cols-1 gap-5 stagger">
+          <div class="flex items-center gap-5 bg-[#F8FAFC] rounded-2xl p-6 border border-teal/20">
+            <div class="text-4xl">🎯</div>
+            <div>
+              <div class="text-3xl font-extrabold text-teal">500+</div>
+              <div class="text-navy font-semibold">Professionals Trained</div>
+              <div class="text-gray-500 text-sm">Across cloud, cyber, data, and PM domains</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-5 bg-[#F8FAFC] rounded-2xl p-6 border border-teal/20">
+            <div class="text-4xl">📜</div>
+            <div>
+              <div class="text-3xl font-extrabold text-teal">1,200+</div>
+              <div class="text-navy font-semibold">Certifications Cleared</div>
+              <div class="text-gray-500 text-sm">With structured preparation and mentor support</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-5 bg-[#F8FAFC] rounded-2xl p-6 border border-teal/20">
+            <div class="text-4xl">🚀</div>
+            <div>
+              <div class="text-3xl font-extrabold text-teal">92%</div>
+              <div class="text-navy font-semibold">Career Growth in 6 Months</div>
+              <div class="text-gray-500 text-sm">Promotions, salary hikes, and new roles secured</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3-STEP PLAN SECTION ========== -->
+  <section class="bg-navy py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="fade-in mb-14">
+        <span class="text-teal font-semibold text-sm tracking-wide uppercase">The Plan</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-3">
+          Your path to the next level —<br />in <span class="text-amber">3 simple steps</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger">
+        <!-- Step 1 -->
+        <div class="step-line relative">
+          <div class="bg-white/10 rounded-2xl p-8 text-left h-full border border-white/10 hover:border-amber/40 transition-colors">
+            <div class="w-12 h-12 bg-amber rounded-full flex items-center justify-center text-navy font-extrabold text-xl mb-5">1</div>
+            <h3 class="text-white font-bold text-xl mb-3">Get Clarity</h3>
+            <p class="text-blue-200 text-sm leading-relaxed">Book a free 30-minute Career Clarity Call with a certified advisor who maps your current role, goals, and the exact certifications that will get you there.</p>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step-line relative">
+          <div class="bg-white/10 rounded-2xl p-8 text-left h-full border border-white/10 hover:border-amber/40 transition-colors">
+            <div class="w-12 h-12 bg-amber rounded-full flex items-center justify-center text-navy font-extrabold text-xl mb-5">2</div>
+            <h3 class="text-white font-bold text-xl mb-3">Get Your Roadmap</h3>
+            <p class="text-blue-200 text-sm leading-relaxed">Receive a personalized certification and career plan built around your schedule, budget, and target role — no generic templates.</p>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step-line relative">
+          <div class="bg-white/10 rounded-2xl p-8 text-left h-full border border-white/10 hover:border-amber/40 transition-colors">
+            <div class="w-12 h-12 bg-amber rounded-full flex items-center justify-center text-navy font-extrabold text-xl mb-5">3</div>
+            <h3 class="text-white font-bold text-xl mb-3">Get Certified</h3>
+            <p class="text-blue-200 text-sm leading-relaxed">Follow structured training, clear your exam with confidence, and unlock the new opportunities that come with a recognized credential on your profile.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 fade-in">
+        <a href="#" onclick="openCalendly(event)"
+           class="inline-block bg-amber text-navy font-bold px-9 py-4 rounded-xl text-base hover:bg-amber/90 transition-all hover:scale-105 shadow-lg">
+          Start With a Free Clarity Call →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CERTIFICATION TRACKS ========== -->
+  <section id="certification-tracks" class="bg-white py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-in">
+        <span class="text-teal font-semibold text-sm tracking-wide uppercase">Certification Domains</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-navy mt-3">Choose your certification domain</h2>
+        <p class="text-gray-500 mt-3 max-w-xl mx-auto">Every track is designed around the certifications that employers actively search for and reward.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+        <!-- Cloud -->
+        <div class="track-card bg-[#F8FAFC] rounded-2xl p-7 border border-gray-100">
+          <div class="text-4xl mb-4">☁️</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Cloud Computing</h3>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">AWS</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Azure</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">GCP</span>
+          </div>
+          <a href="#" onclick="openCalendly(event)" class="text-teal font-semibold text-sm hover:text-navy transition-colors">Explore Track →</a>
+        </div>
+        <!-- Cybersecurity -->
+        <div class="track-card bg-[#F8FAFC] rounded-2xl p-7 border border-gray-100">
+          <div class="text-4xl mb-4">🔐</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Cybersecurity</h3>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">CISSP</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">CEH</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">CompTIA Security+</span>
+          </div>
+          <a href="#" onclick="openCalendly(event)" class="text-teal font-semibold text-sm hover:text-navy transition-colors">Explore Track →</a>
+        </div>
+        <!-- Data & AI -->
+        <div class="track-card bg-[#F8FAFC] rounded-2xl p-7 border border-gray-100">
+          <div class="text-4xl mb-4">📊</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Data & AI</h3>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Google Data</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">AWS ML</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Azure AI</span>
+          </div>
+          <a href="#" onclick="openCalendly(event)" class="text-teal font-semibold text-sm hover:text-navy transition-colors">Explore Track →</a>
+        </div>
+        <!-- DevOps -->
+        <div class="track-card bg-[#F8FAFC] rounded-2xl p-7 border border-gray-100">
+          <div class="text-4xl mb-4">⚙️</div>
+          <h3 class="text-navy font-bold text-lg mb-2">DevOps</h3>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Kubernetes</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Terraform</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Docker</span>
+          </div>
+          <a href="#" onclick="openCalendly(event)" class="text-teal font-semibold text-sm hover:text-navy transition-colors">Explore Track →</a>
+        </div>
+        <!-- Project Management -->
+        <div class="track-card bg-[#F8FAFC] rounded-2xl p-7 border border-gray-100">
+          <div class="text-4xl mb-4">📋</div>
+          <h3 class="text-navy font-bold text-lg mb-2">Project Management</h3>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">PMP</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">PRINCE2</span>
+            <span class="bg-teal/10 text-teal text-xs font-medium px-3 py-1 rounded-full">Agile/Scrum</span>
+          </div>
+          <a href="#" onclick="openCalendly(event)" class="text-teal font-semibold text-sm hover:text-navy transition-colors">Explore Track →</a>
+        </div>
+        <!-- Leadership — Coming Soon -->
+        <div class="track-card bg-gray-50 rounded-2xl p-7 border border-gray-200 opacity-60">
+          <div class="text-4xl mb-4 grayscale">💼</div>
+          <div class="flex items-center gap-2 mb-2">
+            <h3 class="text-gray-500 font-bold text-lg">Leadership & Strategy</h3>
+            <span class="bg-gray-200 text-gray-500 text-xs font-semibold px-2.5 py-0.5 rounded-full">Coming Soon</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="bg-gray-100 text-gray-400 text-xs font-medium px-3 py-1 rounded-full">Executive Certs</span>
+            <span class="bg-gray-100 text-gray-400 text-xs font-medium px-3 py-1 rounded-full">Strategy</span>
+          </div>
+          <span class="text-gray-400 font-semibold text-sm cursor-not-allowed">Explore Track →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section id="success-stories" class="bg-[#F8FAFC] py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-in">
+        <span class="text-teal font-semibold text-sm tracking-wide uppercase">Real Results</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-navy mt-3">Professionals who took the leap</h2>
+        <p class="text-gray-500 mt-3">Real people. Real certifications. Real career moves.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-7 stagger">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="text-teal text-3xl font-serif leading-none mb-4">"</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">
+            I'd been trying to crack AWS on my own for 8 months. CareerBooster gave me a structured path,
+            weekly check-ins, and I cleared it in 10 weeks. Within 3 months I got a 40% salary hike and
+            moved to a Cloud Engineer role.
+          </p>
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-amber text-base">★★★★★</span>
+          </div>
+          <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white font-bold text-sm">RM</div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Rahul M.</div>
+              <div class="text-gray-400 text-xs">Cloud Engineer · Bangalore</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="text-teal text-3xl font-serif leading-none mb-4">"</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">
+            The clarity call alone was worth it — my advisor told me CEH was the exact cert I needed for
+            my target role. I followed their study plan and cleared the CEH on my first attempt. I've
+            already landed two interview calls this month.
+          </p>
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-amber text-base">★★★★★</span>
+          </div>
+          <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <div class="w-10 h-10 bg-teal rounded-full flex items-center justify-center text-white font-bold text-sm">PS</div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Priya S.</div>
+              <div class="text-gray-400 text-xs">Security Analyst · Hyderabad</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div class="text-teal text-3xl font-serif leading-none mb-4">"</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">
+            I was managing projects without a formal cert and kept losing promotions to people who had
+            PMP. CareerBooster built my entire prep plan around my 9-to-5 schedule. First attempt pass —
+            and I got promoted to Project Lead within a month.
+          </p>
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-amber text-base">★★★★★</span>
+          </div>
+          <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <div class="w-10 h-10 bg-amber rounded-full flex items-center justify-center text-navy font-bold text-sm">AK</div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Arun K.</div>
+              <div class="text-gray-400 text-xs">Project Lead · Pune</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BEFORE / AFTER SECTION ========== -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-in">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-navy">Two futures. One decision.</h2>
+        <p class="text-gray-500 mt-3">The only thing standing between these two paths is a single conversation.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 stagger">
+        <!-- Without -->
+        <div class="rounded-2xl p-8 bg-red-50 border border-red-100">
+          <h3 class="text-red-700 font-bold text-lg mb-5 flex items-center gap-2">
+            <span class="text-2xl">✖</span> Without CareerBooster
+          </h3>
+          <ul class="space-y-3.5">
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-red-500 font-bold mt-0.5">❌</span>
+              Same designation next year — and the year after
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-red-500 font-bold mt-0.5">❌</span>
+              Watching peers get promoted while you stay put
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-red-500 font-bold mt-0.5">❌</span>
+              Wasting money on unfinished courses that lead nowhere
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-red-500 font-bold mt-0.5">❌</span>
+              LinkedIn profile no one responds to
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-red-500 font-bold mt-0.5">❌</span>
+              Career plateau that feels permanent
+            </li>
+          </ul>
+        </div>
+
+        <!-- With -->
+        <div class="rounded-2xl p-8 bg-green-50 border border-green-100">
+          <h3 class="text-green-700 font-bold text-lg mb-5 flex items-center gap-2">
+            <span class="text-2xl">✔</span> With CareerBooster
+          </h3>
+          <ul class="space-y-3.5">
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-green-500 font-bold mt-0.5">✅</span>
+              Industry-recognised certification on your profile
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-green-500 font-bold mt-0.5">✅</span>
+              Promoted to the role you've been working toward
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-green-500 font-bold mt-0.5">✅</span>
+              A clear plan you actually follow through to completion
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-green-500 font-bold mt-0.5">✅</span>
+              LinkedIn attracting recruiters and new opportunities
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-700">
+              <span class="text-green-500 font-bold mt-0.5">✅</span>
+              Career moving forward with confidence and momentum
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-center mt-12 fade-in">
+        <a href="#" onclick="openCalendly(event)"
+           class="inline-block bg-amber text-navy font-bold px-9 py-4 rounded-xl text-base hover:bg-amber/90 transition-all hover:scale-105 shadow-lg">
+          I Choose the Right Path →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FINAL CTA SECTION ========== -->
+  <section class="bg-navy py-24 md:py-32">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+      <span class="text-teal font-semibold text-sm tracking-wide uppercase">Ready to move?</span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-4 mb-5 leading-tight">
+        Your next career move starts with<br /><span class="text-amber">one conversation.</span>
+      </h2>
+      <p class="text-blue-200 text-base md:text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+        Book a free 30-minute Career Clarity Call. No sales pitch. No pressure. Just clarity on which
+        certifications will move your career forward and how to get there.
+      </p>
+      <a href="#" onclick="openCalendly(event)"
+         class="inline-block bg-amber text-navy font-extrabold px-10 py-5 rounded-xl text-lg hover:bg-amber/90 transition-all hover:scale-105 shadow-2xl">
+        Book My Free Clarity Call →
+      </a>
+      <p class="text-blue-300/60 text-sm mt-5">Free · 30 minutes · No obligation</p>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-[#0d1f36]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+        <!-- Logo + Tagline -->
+        <div class="md:col-span-1">
+          <div class="text-white font-bold text-xl mb-1">CareerBooster<span class="text-teal"> Academy</span></div>
+          <p class="text-blue-300/70 text-sm mt-2 leading-relaxed">From Learning to Leadership</p>
+          <p class="text-blue-300/50 text-xs mt-4 leading-relaxed">
+            Helping working professionals earn industry-recognised certifications and unlock the careers they deserve.
+          </p>
+        </div>
+
+        <!-- Tracks -->
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4">Tracks</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#certification-tracks" class="text-blue-300/60 hover:text-white text-sm transition-colors">Cloud Computing</a></li>
+            <li><a href="#certification-tracks" class="text-blue-300/60 hover:text-white text-sm transition-colors">Cybersecurity</a></li>
+            <li><a href="#certification-tracks" class="text-blue-300/60 hover:text-white text-sm transition-colors">Data & AI</a></li>
+            <li><a href="#certification-tracks" class="text-blue-300/60 hover:text-white text-sm transition-colors">DevOps</a></li>
+            <li><a href="#certification-tracks" class="text-blue-300/60 hover:text-white text-sm transition-colors">Project Management</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4">Company</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">About Us</a></li>
+            <li><a href="#success-stories" class="text-blue-300/60 hover:text-white text-sm transition-colors">Success Stories</a></li>
+            <li><a href="#how-it-works" class="text-blue-300/60 hover:text-white text-sm transition-colors">How It Works</a></li>
+            <li><a href="#" onclick="openCalendly(event)" class="text-blue-300/60 hover:text-white text-sm transition-colors">Book Clarity Call</a></li>
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4">Legal</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">Refund Policy</a></li>
+            <li><a href="#" class="text-blue-300/60 hover:text-white text-sm transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-blue-300/40 text-sm">
+          © 2024 CareerBooster Academy. All rights reserved.
+        </p>
+        <!-- Social Icons -->
+        <div class="flex items-center gap-4">
+          <!-- LinkedIn -->
+          <a href="#" aria-label="LinkedIn" class="text-blue-300/40 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram" class="text-blue-300/40 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a href="#" aria-label="YouTube" class="text-blue-300/40 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== CALENDLY MODAL PLACEHOLDER ========== -->
+  <div id="calendly-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center relative">
+      <button onclick="closeCalendly()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors text-xl">✕</button>
+      <div class="text-5xl mb-4">📅</div>
+      <h3 class="text-navy font-extrabold text-2xl mb-3">Book Your Free Clarity Call</h3>
+      <p class="text-gray-500 text-sm mb-6 leading-relaxed">
+        A 30-minute call with a certified career advisor. No sales pitch.
+        Just a clear plan for your next career move.
+      </p>
+      <div class="bg-[#F8FAFC] rounded-xl p-5 text-left mb-6 border border-gray-100">
+        <div class="flex items-center gap-3 text-sm text-gray-600 mb-2"><span>⏱</span> 30 minutes</div>
+        <div class="flex items-center gap-3 text-sm text-gray-600 mb-2"><span>🎯</span> Personalised certification roadmap</div>
+        <div class="flex items-center gap-3 text-sm text-gray-600"><span>🆓</span> Completely free, no obligation</div>
+      </div>
+      <a href="#"
+         class="block w-full bg-amber text-navy font-bold py-3.5 rounded-xl text-base hover:bg-amber/90 transition-colors">
+        Open Scheduling Page →
+      </a>
+      <p class="text-gray-400 text-xs mt-3">Calendly integration will go here</p>
+    </div>
+  </div>
+
+  <script>
+    // ── Navbar shadow on scroll ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
+    });
+
+    // ── Hamburger menu ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    hamburger.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      document.getElementById('ham-1').style.transform = menuOpen ? 'rotate(45deg) translate(4px, 4px)' : '';
+      document.getElementById('ham-2').style.opacity = menuOpen ? '0' : '1';
+      document.getElementById('ham-3').style.transform = menuOpen ? 'rotate(-45deg) translate(4px, -4px)' : '';
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      document.getElementById('ham-1').style.transform = '';
+      document.getElementById('ham-2').style.opacity = '1';
+      document.getElementById('ham-3').style.transform = '';
+    }
+
+    // ── Scroll-triggered fade-in ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in, .stagger').forEach(el => observer.observe(el));
+
+    // ── Calendly modal ──
+    function openCalendly(e) {
+      e.preventDefault();
+      document.getElementById('calendly-modal').classList.replace('hidden', 'flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCalendly() {
+      document.getElementById('calendly-modal').classList.replace('flex', 'hidden');
+      document.body.style.overflow = '';
+    }
+
+    // Close on backdrop click
+    document.getElementById('calendly-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeCalendly();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeCalendly();
+    });
+  </script>
+
+</body>
+</html>
